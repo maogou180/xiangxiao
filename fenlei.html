@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>秒购导航栏示例</title>
+		<style>
+			:root {
+				--primary-color: #ff6b6b;
+				--secondary-color: #4ecdc4;
+				--accent-color: #feca57;
+				--background-color: #f7f7f7;
+				--text-color: #333;
+				--light-gray: #e0e0e0;
+			}
+
+			body {
+				margin: 0;
+				font-family: Arial, sans-serif;
+				display: flex;
+				background-color: var(--background-color);
+				color: var(--text-color);
+			}
+
+			.sidebar {
+				width: 150px;
+				background-color: var(--primary-color);
+				color: white;
+				padding: 20px;
+				height: 100vh;
+				position: fixed;
+				overflow-y: auto;
+				box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+			}
+
+			.sidebar h2 {
+				color: var(--accent-color);
+				text-align: center;
+			}
+
+			.sidebar ul {
+				list-style-type: none;
+				padding: 0;
+			}
+
+			.sidebar ul li {
+				padding: 15px;
+				border-bottom: 1px solid var(--light-gray);
+				cursor: pointer;
+				transition: background-color 0.3s;
+			}
+
+			.sidebar ul li:hover {
+				background-color: var(--secondary-color);
+			}
+
+			.content {
+				margin-left: 200px;
+				padding: 20px;
+				width: calc(100% - 200px);
+				background-color: white;
+				height: 100vh;
+				overflow-y: auto;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.content h2 {
+				border-bottom: 2px solid var(--primary-color);
+				padding-bottom: 10px;
+				margin-bottom: 20px;
+			}
+
+			.subcategory-list {
+				list-style-type: none;
+				padding: 0;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: flex-start;
+				align-content: flex-start;
+				height: 100%;
+				overflow-y: auto;
+				transition: opacity 0.5s ease, transform 0.5s ease;
+				/* 添加动画 */
+				opacity: 0;
+				/* 初始状态 */
+				transform: translateY(-20px);
+				/* 初始位置 */
+			}
+
+			.subcategory-list.visible {
+				opacity: 1;
+				/* 显示状态 */
+				transform: translateY(0);
+				/* 结束位置 */
+			}
+
+			.subcategory-list li {
+				padding: 10px;
+				margin: 5px;
+				flex: 1 0 45%;
+				box-sizing: border-box;
+				transition: background-color 0.3s;
+				border: 1px solid var(--light-gray);
+				border-radius: 5px;
+				background-color: #fff;
+			}
+
+			.subcategory-list li:hover {
+				background-color: var(--light-gray);
+				padding-left: 5px;
+			}
+
+			.back-btn {
+				background-color: var(--accent-color);
+				width: 80px;
+				text-align: center;
+				color: var(--text-color);
+				padding: 10px 15px;
+				text-decoration: none;
+				border-radius: 10px;
+				display: inline-block;
+				margin-bottom: 20px;
+				transition: background-color 0.3s;
+			}
+
+			.back-btn:hover {
+				background-color: var(--secondary-color);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="sidebar">
+			<h2>秒购商品分类</h2>
+			<ul>
+				<li onclick="showSubcategories('家用电器')">家用电器</li>
+				<li onclick="showSubcategories('手机/运营商/数码')">手机/运营商/数码</li>
+				<li onclick="showSubcategories('电脑/办公/文具用品')">电脑/办公/文具用品</li>
+				<li onclick="showSubcategories('家居/家具/家装/厨具')">家居/家具/家装/厨具</li>
+				<li onclick="showSubcategories('男装/女装/童装/内衣')">男装/女装/童装/内衣</li>
+				<li onclick="showSubcategories('美妆/个护清洁/宠物')">美妆/个护清洁/宠物</li>
+				<li onclick="showSubcategories('女鞋/箱包/钟表/珠宝')">女鞋/箱包/钟表/珠宝</li>
+				<li onclick="showSubcategories('男鞋/运动/户外')">男鞋/运动/户外</li>
+				<li onclick="showSubcategories('房产/汽车/汽车用品')">房产/汽车/汽车用品</li>
+				<li onclick="showSubcategories('母婴/玩具乐器')">母婴/玩具乐器</li>
+				<li onclick="showSubcategories('食品/酒类/生鲜/特产')">食品/酒类/生鲜/特产</li>
+				<li onclick="showSubcategories('艺术/礼品鲜花/农牧园艺')">艺术/礼品鲜花/农牧园艺</li>
+				<li onclick="showSubcategories('秒购买药/计生情趣')">秒购买药/计生情趣</li>
+				<li onclick="showSubcategories('图书/文娱/教育/电子书')">图书/文娱/教育/电子书</li>
+				<li onclick="showSubcategories('机票/酒店/旅游/生活')">机票/酒店/旅游/生活</li>
+				<li onclick="showSubcategories('支付/白条/保险/企业金融')">支付/白条/保险/企业金融</li>
+				<li onclick="showSubcategories('安装/维修/清洗/二手')">安装/维修/清洗/二手</li>
+				<li onclick="showSubcategories('元器件/原材料/五金机电')">元器件/原材料/五金机电</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<a href="zhuye.html" class="back-btn">返回主页</a>
+			<h2 id="category-title">请先选择分类</h2>
+			<ul id="subcategory-list" class="subcategory-list">
+				<!-- 子分类将被插入这里 -->
+			</ul>
+		</div>
+
+		<script>
+			function showSubcategories(category) {
+				const categoryTitle = document.getElementById('category-title');
+				const subcategoryList = document.getElementById('subcategory-list');
+				categoryTitle.textContent = `已选择分类: ${category}`;
+				subcategoryList.innerHTML = ''; // 清空子分类
+
+				// 添加 visible 类以进行动画
+				subcategoryList.classList.remove('visible');
+
+				setTimeout(() => {
+					let subcategories = [];
+
+					switch (category) {
+						case '家用电器':
+							subcategories = [
+								'家电馆', '电视', '空调', '洗衣机', '冰箱', '厨卫大电', '厨房小电',
+								'环境电器', '个护健康', '更多...'
+							];
+							break;
+						case '手机/运营商/数码':
+							subcategories = [
+								'手机', '运营商', '数码相机', '摄像机', '智能手表', '手机配件', '更多...'
+							];
+							break;
+						case '电脑/办公/文具用品':
+							subcategories = [
+								'笔记本电脑', '台式机', '平板电脑', '打印机', '文具用品', '办公设备', '更多...'
+							];
+							break;
+						case '家居/家具/家装/厨具':
+							subcategories = [
+								'沙发', '床', '桌椅', '橱柜', '装修材料', '厨具', '更多...'
+							];
+							break;
+						case '男装/女装/童装/内衣':
+							subcategories = [
+								'男士T恤', '女士连衣裙', '童装外套', '内衣套装', '男士西装', '女士羽绒服', '更多...'
+							];
+							break;
+						case '美妆/个护清洁/宠物':
+							subcategories = [
+								'护肤品', '洗发水', '沐浴露', '宠物用品', '化妆品', '清洁用品', '更多...'
+							];
+							break;
+						case '女鞋/箱包/钟表/珠宝':
+							subcategories = [
+								'高跟鞋', '运动鞋', '手提包', '背包', '手表', '首饰', '珠宝', '更多...'
+							];
+							break;
+						case '男鞋/运动/户外':
+							subcategories = [
+								'休闲鞋', '运动鞋', '户外鞋', '登山装备', '运动器材', '更多...'
+							];
+							break;
+						case '房产/汽车/汽车用品':
+							subcategories = [
+								'二手房', '新房', '汽车', '汽车配件', '汽车用品', '更多...'
+							];
+							break;
+						case '母婴/玩具乐器':
+							subcategories = [
+								'婴儿用品', '玩具', '乐器', '童书', '更多...'
+							];
+							break;
+						case '食品/酒类/生鲜/特产':
+							subcategories = [
+								'零食', '生鲜食品', '酒', '特产', '更多...'
+							];
+							break;
+						case '艺术/礼品鲜花/农牧园艺':
+							subcategories = [
+								'艺术品', '礼品', '鲜花', '园艺工具', '更多...'
+							];
+							break;
+						case '秒购买药/计生情趣':
+							subcategories = [
+								'药品', '计生用品', '情趣用品', '更多...'
+							];
+							break;
+						case '图书/文娱/教育/电子书':
+							subcategories = [
+								'小说', '教材', '电子书', '玩具', '更多...'
+							];
+							break;
+						case '机票/酒店/旅游/生活':
+							subcategories = [
+								'机票', '酒店', '旅游团', '生活服务', '更多...'
+							];
+							break;
+						case '支付/白条/保险/企业金融':
+							subcategories = [
+								'支付方式', '贷款', '保险产品', '企业金融服务', '更多...'
+							];
+							break;
+						case '安装/维修/清洗/二手':
+							subcategories = [
+								'安装服务', '维修服务', '清洗服务', '二手物品', '更多...'
+							];
+							break;
+						case '元器件/原材料/五金机电':
+							subcategories = [
+								'电子元器件', '原材料', '五金工具', '机电设备', '更多...'
+							];
+							break;
+					}
+
+					subcategories.forEach(subcategory => {
+						const li = document.createElement('li');
+						li.textContent = subcategory;
+						subcategoryList.appendChild(li);
+					});
+
+					// 显示子分类列表
+					subcategoryList.classList.add('visible');
+				}, 300); // 延迟添加 visible 类以使动画生效
+			}
+		</script>
+	</body>
+</html>
